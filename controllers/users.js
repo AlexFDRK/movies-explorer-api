@@ -18,11 +18,7 @@ module.exports.patchMe = (req, res, next) => {
   const { name } = req.body;
   const _id = req.user;
 
-  User.findByIdAndUpdate(
-    _id,
-    { name},
-    { new: true, runValidators: true },
-  )
+  User.findByIdAndUpdate(_id, { name }, { new: true, runValidators: true })
     .then((data) => {
       if (data) {
         res.send({ data });

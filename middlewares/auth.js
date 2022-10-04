@@ -21,7 +21,10 @@ const auth = (req, res, next) => {
   // //  const token = cookies.jwt;
   let payload;
   try {
-    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+    payload = jwt.verify(
+      token,
+      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+    );
   } catch (err) {
     return next(new СustomError('Ошибочный токен', ERROR_401));
   }

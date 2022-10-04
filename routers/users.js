@@ -1,9 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const {
-  getMe,
-  patchMe,
-} = require('../controllers/users');
+const { getMe, patchMe } = require('../controllers/users');
 
 router.get('/me', getMe);
 

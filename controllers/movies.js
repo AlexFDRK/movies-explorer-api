@@ -1,12 +1,11 @@
-const Movie = require("../models/movie");
-const СustomError = require("../utils/customError");
+const Movie = require('../models/movie');
+const СustomError = require('../utils/customError');
 const {
-  MISSING_ID_ERROR_TEXT,
   NOT_OWNER_ERROR_TEXT,
   DATA_NOT_FOUND_TEXT,
   ERROR_403,
   ERROR_404,
-} = require("../utils/constants");
+} = require('../utils/constants');
 
 module.exports.getMovies = (_req, res, next) => {
   Movie.find({})

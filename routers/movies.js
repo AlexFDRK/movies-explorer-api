@@ -1,28 +1,25 @@
-const router = require("express").Router();
-const { celebrate, Joi } = require("celebrate");
+const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 const {
   getMovies,
   createMovie,
   deleteMovie,
   //   likeMovies,
   //   dislikeMovies,
-} = require("../controllers/movies");
+} = require('../controllers/movies');
 
-router.get("/", getMovies);
+router.get('/', getMovies);
 
-router.post(
-  "/",
-  createMovie
-);
+router.post('/', createMovie);
 
 router.delete(
-  "/:movieId",
+  '/:movieId',
   celebrate({
     params: Joi.object().keys({
       movieId: Joi.string().required().min(24).max(24),
     }),
   }),
-  deleteMovie
+  deleteMovie,
 );
 
 module.exports = router;
