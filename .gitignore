@@ -13,3 +13,13 @@ node_modules
 .DS_Store
 .idea
 .vscode 
+
+# Additional modules
+.prettierrc
+.eslintrc.json
+
+# Exclude logs
+*.log
+
+# File for JWT_SECRET
+.env
