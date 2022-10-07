@@ -12,9 +12,7 @@ const auth = (req, res, next) => {
   }
 
   const token = authorization.replace('Bearer ', '');
-
   //   const { cookies } = req;
-
   //   if (!cookies) {
   //     return next(new СustomError('Неуспешная авторизация', ERROR_401));
   //   }

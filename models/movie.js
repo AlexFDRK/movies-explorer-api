@@ -19,7 +19,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, "Поле 'Длительность фильма' - не заполнено"],
   },
   year: {
-    type: Number,
+    type: String,
     required: [true, "Поле 'Год' - не заполнено"],
   },
   description: {
@@ -45,6 +45,10 @@ const movieSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: [true, "Поле 'Владелец' - не заполнено"],
+  },
+  movieId: {
+    type: String,
+    required: [true, "Поле 'movieId' - не заполнено"],
   },
   nameRU: {
     type: String,

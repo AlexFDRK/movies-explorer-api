@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-const rateLimit = require('express-rate-limit');
 
 const helmet = require('helmet');
 
@@ -11,9 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-const СustomError = require('./utils/customError');
 const { catchErrors } = require('./controllers/errors');
-const { ERROR_404_TEXT, ERROR_404 } = require('./utils/constants');
 
 const allowedCors = [
   'http://localhost:3000',
@@ -22,16 +19,9 @@ const allowedCors = [
   'https://localhost:3001',
 ];
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
+const { limiter } = require('./utils/limiter');
 
 require('dotenv').config();
-
-const { auth } = require('./middlewares/auth');
 
 app.use(requestLogger); // DDOS shield
 app.use(helmet()); // eader correction
@@ -39,7 +29,11 @@ app.use(helmet()); // eader correction
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.DB_CONN);
+if (process.env.NODE_ENV !== 'production') {
+  mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
+} else {
+  mongoose.connect(process.env.DB_CONN);
+}
 
 app.use(
   cors({
@@ -50,17 +44,7 @@ app.use(
 
 app.use(limiter);
 
-app.use('/signup', require('./routers/logup'));
-app.use('/signin', require('./routers/login'));
-
-app.use(auth);
-
-app.use('/users', require('./routers/users'));
-app.use('/movies', require('./routers/movies'));
-
-app.use('*', (_req, res, next) => {
-  next(new СustomError(ERROR_404_TEXT, ERROR_404));
-});
+app.use('/', require('./routers/index'));
 
 app.use(errorLogger);
 app.use(errors());

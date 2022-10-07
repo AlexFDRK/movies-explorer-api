@@ -1,19 +1,12 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+const { celebrate } = require('celebrate');
 const { login } = require('../controllers/login');
+const { loginSchema } = require('../utils/validator');
 
 router.post(
   '/',
   celebrate({
-    body: Joi.object().keys({
-      email: Joi.string()
-        .required()
-        .email({
-          minDomainSegments: 2,
-          tlds: { allow: ['com', 'net', 'ru'] },
-        }),
-      password: Joi.string().required().min(2),
-    }),
+    body: loginSchema,
   }),
   login,
 );

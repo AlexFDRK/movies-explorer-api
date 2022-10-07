@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+const { celebrate } = require('celebrate');
+const { movieBodySchema, movieDeleteSchema } = require('../utils/validator');
 const {
   getMovies,
   createMovie,
@@ -10,14 +11,18 @@ const {
 
 router.get('/', getMovies);
 
-router.post('/', createMovie);
+router.post(
+  '/',
+  celebrate({
+    body: movieBodySchema,
+  }),
+  createMovie,
+);
 
 router.delete(
   '/:movieId',
   celebrate({
-    params: Joi.object().keys({
-      movieId: Joi.string().required().min(24).max(24),
-    }),
+    params: movieDeleteSchema,
   }),
   deleteMovie,
 );

@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+const { celebrate } = require('celebrate');
+const { patchMeSchema } = require('../utils/validator');
 const { getMe, patchMe } = require('../controllers/users');
 
 router.get('/me', getMe);
@@ -7,9 +8,7 @@ router.get('/me', getMe);
 router.patch(
   '/me',
   celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().min(2).max(30),
-    }),
+    body: patchMeSchema,
   }),
   patchMe,
 );
