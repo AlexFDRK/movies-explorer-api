@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -17,6 +18,10 @@ const allowedCors = [
   'https://localhost:3000',
   'http://localhost:3001',
   'https://localhost:3001',
+  'https://praktikum.tk',
+  'http://praktikum.tk',
+  'http://movies-explorer-fdrk.nomoredomains.club',
+  'https://movies-explorer-fdrk.nomoredomains.club',
 ];
 
 const { limiter } = require('./utils/limiter');
@@ -51,5 +56,5 @@ app.use(errors());
 app.use(catchErrors);
 
 app.listen(PORT, () => {
-  //  console.log(`App listening on port ${PORT}`);
+  console.log(`App listening on port ${PORT}`);
 });
