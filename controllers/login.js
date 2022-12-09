@@ -33,7 +33,7 @@ module.exports.login = (req, res, next) => {
               NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
               {
                 expiresIn: '7d',
-              },
+              }
             );
             return res
               .cookie('jwt', token, {
@@ -49,18 +49,14 @@ module.exports.login = (req, res, next) => {
               });
           }
           return next(new СustomError(AUTHORIZATION_ERROR_TEXT, ERROR_401));
-        },
+        }
       );
     })
     .catch((err) => next(err));
 };
 
 module.exports.createUser = (req, res, next) => {
-  const {
-    name,
-    email,
-    password,
-  } = req.body;
+  const { name, email, password } = req.body;
 
   bcrypt
     .hash(password, 10)
@@ -70,7 +66,20 @@ module.exports.createUser = (req, res, next) => {
         email,
         password: hash,
       })
-        .then((data) => res.status(201).send(data))
+        .then((data) => {
+          const token = jwt.sign(
+            { _id: data._id },
+            NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+            {
+              expiresIn: '7d',
+            },
+          );
+          res.status(200).send({
+            email: data.email,
+            name: data.name,
+            token,
+          });
+        })
         .catch((err) => {
           if (err.code === 11000) {
             next(new СustomError(err.message, ERROR_409));
